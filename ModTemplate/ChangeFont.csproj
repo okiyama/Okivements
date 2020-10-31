@@ -7,8 +7,8 @@
     <ProjectGuid>{8A39F9E7-1A89-430C-9C3E-BDFB3B7E17DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ModTemplate</RootNamespace>
-    <AssemblyName>ModTemplate</AssemblyName>
+    <RootNamespace>ChangeFont</RootNamespace>
+    <AssemblyName>ChangeFont</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -273,7 +273,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModTemplate.cs" />
+    <Compile Include="ChangeFont.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
