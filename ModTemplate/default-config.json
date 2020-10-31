@@ -1,6 +1,18 @@
 {
 	"enabled": true,
 	"settings": {
-		"Font Name":  "Times New Roman"
+		"Font Name":  "Times New Roman",
+		"Replace fonts": {
+			"type": "input",
+			"value": "P"
+		},
+		"Increase font size": {
+			"type": "input",
+			"value": "O"
+		},
+		"Decrease font size": {
+			"type": "input",
+			"value": "L"
+		},
 	}
 }

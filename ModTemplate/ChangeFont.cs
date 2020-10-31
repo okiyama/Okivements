@@ -14,11 +14,25 @@ namespace ModTemplate
     {
         Font _font;
         int _fontSizeAmount = 1;
+        private readonly Dictionary<string, IModInputCombination> _inputs = new Dictionary<string, IModInputCombination>();
 
-		public override void Configure(IModConfig config)
+        public override void Configure(IModConfig config)
 		{
             var fontName = config.GetSettingsValue<string>("Font Name");
             _font = Font.CreateDynamicFontFromOSFont(fontName, 100);
+
+            foreach (var input in _inputs)
+            {
+                ModHelper.Input.UnregisterCombination(input.Value);
+            }
+            foreach (var key in config.Settings.Keys)
+            {
+                var value = config.GetSettingsValue<string>(key);
+                if (!string.IsNullOrEmpty(value) && key != "Font Name")
+                {
+                    _inputs[key] = ModHelper.Input.RegisterCombination(this, key, value);
+                }
+            }
         }
 
         private void Start()
@@ -28,15 +42,15 @@ namespace ModTemplate
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.P))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Replace fonts"]))
             {
                 ReplaceFonts();
             }
-            if (Input.GetKeyDown(KeyCode.O))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Increase font size"]))
             {
                 ResizeFonts(_fontSizeAmount);
             }
-            if (Input.GetKeyDown(KeyCode.L))
+            if (ModHelper.Input.IsNewlyPressed(_inputs["Decrease font size"]))
             {
                 ResizeFonts(-_fontSizeAmount);
             }
