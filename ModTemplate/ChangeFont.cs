@@ -13,7 +13,7 @@ namespace ModTemplate
     public class ChangeFont : ModBehaviour
     {
         Font _font;
-        int _fontSizeAmount = 1;
+        const int _fontResizeAmount = 1;
         private readonly Dictionary<string, IModInputCombination> _inputs = new Dictionary<string, IModInputCombination>();
 
         public override void Configure(IModConfig config)
@@ -35,11 +35,11 @@ namespace ModTemplate
             }
             if (ModHelper.Input.IsNewlyPressed(_inputs["Increase font size"]))
             {
-                ResizeFonts(_fontSizeAmount);
+                ResizeFonts(_fontResizeAmount);
             }
             if (ModHelper.Input.IsNewlyPressed(_inputs["Decrease font size"]))
             {
-                ResizeFonts(-_fontSizeAmount);
+                ResizeFonts(-_fontResizeAmount);
             }
         }
 
