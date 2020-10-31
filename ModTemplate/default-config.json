@@ -14,5 +14,13 @@
 			"type": "input",
 			"value": "L"
 		},
+		"Increase line height": {
+			"type": "input",
+			"value": "U"
+		},
+		"Decrease line height": {
+			"type": "input",
+			"value": "J"
+		},
 	}
 }
