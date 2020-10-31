@@ -20,19 +20,6 @@ namespace ModTemplate
 		{
             var fontName = config.GetSettingsValue<string>("Font Name");
             _font = Font.CreateDynamicFontFromOSFont(fontName, 100);
-
-            foreach (var input in _inputs)
-            {
-                ModHelper.Input.UnregisterCombination(input.Value);
-            }
-            foreach (var key in config.Settings.Keys)
-            {
-                var value = config.GetSettingsValue<string>(key);
-                if (!string.IsNullOrEmpty(value) && key != "Font Name")
-                {
-                    _inputs[key] = ModHelper.Input.RegisterCombination(this, key, value);
-                }
-            }
         }
 
         private void Start()
