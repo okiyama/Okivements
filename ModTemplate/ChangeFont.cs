@@ -11,25 +11,31 @@ namespace ModTemplate
 {
     public class ChangeFont : ModBehaviour
     {
-        private void Awake()
-        {
-            // You won't be able to access OWML's mod helper in Awake.
-            // So you probably don't want to do anything here.
-            // Use Start() instead.
-        }
+        Font _font;
 
         private void Start()
         {
-            // Starting here, you'll have access to OWML's mod helper.
             ModHelper.Console.WriteLine($"My mod {nameof(ChangeFont)} is loaded!", MessageType.Success);
 
-            var font = Font.CreateDynamicFontFromOSFont("AR BLANCA", 10);
+            _font = Font.CreateDynamicFontFromOSFont("AR BLANCA", 10);
+        }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                ReplaceFonts();
+            }
+        }
+
+        private void ReplaceFonts()
+        {            
             var texts = FindObjectsOfType<Text>();
             foreach (var text in texts)
             {
-                text.font = font;
+                text.font = _font;
             }
+
         }
     }
 }
