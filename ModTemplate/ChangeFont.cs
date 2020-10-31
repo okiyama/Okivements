@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using OWML.ModHelper.Events;
 
 namespace ModTemplate
 {
@@ -13,11 +14,15 @@ namespace ModTemplate
     {
         Font _font;
 
+		public override void Configure(IModConfig config)
+		{
+            var fontName = config.GetSettingsValue<string>("Font Name");
+            _font = Font.CreateDynamicFontFromOSFont(fontName, 300);
+        }
+
         private void Start()
         {
-            ModHelper.Console.WriteLine($"My mod {nameof(ChangeFont)} is loaded!", MessageType.Success);
-
-            _font = Font.CreateDynamicFontFromOSFont("AR BLANCA", 10);
+            ModHelper.Console.WriteLine($"{nameof(ChangeFont)} is loaded!", MessageType.Success);
         }
 
         private void Update()
@@ -29,13 +34,12 @@ namespace ModTemplate
         }
 
         private void ReplaceFonts()
-        {            
+        {
             var texts = FindObjectsOfType<Text>();
             foreach (var text in texts)
             {
                 text.font = _font;
             }
-
         }
     }
 }
