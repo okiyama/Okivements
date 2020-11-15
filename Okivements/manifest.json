@@ -1,0 +1,9 @@
+{
+  "filename": "Okivements.dll",
+  "author": "Okiyama",
+  "name": "Okivements",
+  "uniqueName": "Okiyama.Okivements",
+  "description": "An achievements mod that replicates the Steam achievements for Epic users, as well as adding additional custom achievements.",
+  "version": "0.1.0",
+  "owmlVersion": "0.7.3"
+}
