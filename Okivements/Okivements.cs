@@ -3,12 +3,15 @@ using OWML.Common;
 using System;
 using UnityEngine;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace Okivements
 {
     public class Okivements : ModBehaviour
     {
         private static IModHelper modHelper = null;
+        private AchievementManager achievementManager = null;
+        private static Dictionary<Achievements.Type, bool> earnedAchievements = new Dictionary<Achievements.Type, bool>();
 
         private void Awake()
         {
@@ -26,7 +29,13 @@ namespace Okivements
 
         public static void PatchedMethod(Achievements.Type type)
         {
-            modHelper.Console.WriteLine("Earned the " + type + " achievement! ");
+            if(!earnedAchievements[type])
+            {
+                modHelper.Console.WriteLine("Earned the " + type + " achievement for the first time! ");
+            } else
+            {
+                modHelper.Console.WriteLine("Earned the " + type + " achievement! But not for the first time.");
+            }
         }
 
         private void OnEvent(MonoBehaviour behaviour, Events ev)
@@ -34,9 +43,11 @@ namespace Okivements
             ModHelper.Console.WriteLine("Behaviour name: " + behaviour.name);
             if (behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart)
             {
+                Achievements.ResetAll();
                 ModHelper.Console.WriteLine("Flashlight has started!");
+                achievementManager = new AchievementManager(modHelper);
                 /*Achievements.Earn(Achievements.Type.HARMONIC_CONVERGENCE);
-
+                */
                 for(var i = 0; i < 17; i++)
                 {
                     //ModHelper.Console.WriteLine("i: " + i);
@@ -45,8 +56,9 @@ namespace Okivements
                     var isEarned = (bool[])field.GetValue(null);
                     //ModHelper.Console.WriteLine("is earned: " + isEarned);
                     ModHelper.Console.WriteLine("Achievement " + Enum.GetName(typeof(Achievements.Type), i) + " is achieved: " + isEarned[i]);
+                    earnedAchievements[(Achievements.Type)i] = isEarned[i];
                 }
-                */
+                
             }
         }
     }
