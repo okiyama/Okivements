@@ -2,6 +2,7 @@
 	"enabled": true,
 	"settings": {
 		"Enable Steam Achievements": true,
-		"Enable Custom Achievements": true
+		"Enable Custom Achievements": true,
+		"Enable Enhanced Sound Effects": false
 	}
 }

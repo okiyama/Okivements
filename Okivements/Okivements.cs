@@ -1,17 +1,13 @@
 ﻿using OWML.ModHelper;
 using OWML.Common;
-using System;
 using UnityEngine;
-using System.Reflection;
-using System.Collections.Generic;
 
 namespace Okivements
 {
     public class Okivements : ModBehaviour
     {
-        private static IModHelper modHelper = null;
-        private AchievementManager achievementManager = null;
-        private static Dictionary<Achievements.Type, bool> earnedAchievements = new Dictionary<Achievements.Type, bool>();
+        private static new IModHelper ModHelper = null;
+        private static AchievementManager AchievementManager = null;
 
         private void Awake()
         {
@@ -19,46 +15,27 @@ namespace Okivements
 
         private void Start()
         {
-            modHelper = ModHelper;
-            ModHelper.Console.WriteLine($"My mod {nameof(Okivements)} is loaded!", MessageType.Success);
-            ModHelper.Events.Subscribe<Flashlight>(Events.AfterStart);
-            ModHelper.Events.Event += OnEvent;
+            ModHelper = base.ModHelper;
+            ModHelper.Manifest.ModFolderPath = ModHelper.Manifest.ModFolderPath.Replace("\\", "/");
+            base.ModHelper.Events.Subscribe<Flashlight>(Events.AfterStart);
+            base.ModHelper.Events.Event += OnEvent;
 
-            ModHelper.HarmonyHelper.AddPrefix<Achievements>("Earn", typeof(Okivements), nameof(PatchedMethod));
+            base.ModHelper.HarmonyHelper.AddPrefix<Achievements>("Earn", typeof(Okivements), nameof(PatchedMethod));
         }
 
         public static void PatchedMethod(Achievements.Type type)
         {
-            if(!earnedAchievements[type])
-            {
-                modHelper.Console.WriteLine("Earned the " + type + " achievement for the first time! ");
-            } else
-            {
-                modHelper.Console.WriteLine("Earned the " + type + " achievement! But not for the first time.");
-            }
+            AchievementManager.EarnAchivement(type);
         }
 
         private void OnEvent(MonoBehaviour behaviour, Events ev)
         {
-            ModHelper.Console.WriteLine("Behaviour name: " + behaviour.name);
+            base.ModHelper.Console.WriteLine("Behaviour name: " + behaviour.name);
             if (behaviour.GetType() == typeof(Flashlight) && ev == Events.AfterStart)
             {
                 Achievements.ResetAll();
-                ModHelper.Console.WriteLine("Flashlight has started!");
-                achievementManager = new AchievementManager(modHelper);
-                /*Achievements.Earn(Achievements.Type.HARMONIC_CONVERGENCE);
-                */
-                for(var i = 0; i < 17; i++)
-                {
-                    //ModHelper.Console.WriteLine("i: " + i);
-                    var field = typeof(Achievements).GetField("s_isEarned", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-                    //ModHelper.Console.WriteLine("Field: " + field + " field null: " + field == null);
-                    var isEarned = (bool[])field.GetValue(null);
-                    //ModHelper.Console.WriteLine("is earned: " + isEarned);
-                    ModHelper.Console.WriteLine("Achievement " + Enum.GetName(typeof(Achievements.Type), i) + " is achieved: " + isEarned[i]);
-                    earnedAchievements[(Achievements.Type)i] = isEarned[i];
-                }
-                
+                base.ModHelper.Console.WriteLine("Flashlight has started!");
+                AchievementManager = AchievementManager ?? new AchievementManager(ModHelper);
             }
         }
     }

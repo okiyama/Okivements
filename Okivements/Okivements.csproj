@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit3TestAdapter.3.17.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.17.0\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="..\packages\NUnit.3.13.1\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.13.1\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -12,6 +14,8 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,6 +64,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.13.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.13.1\lib\net35\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="OWML.Common, Version=1.1.8.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OWML.1.1.8\lib\net35\OWML.Common.dll</HintPath>
@@ -277,32 +284,52 @@
     <Compile Include="AchievementManager.cs" />
     <Compile Include="Okivements.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="test\JsonTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="achievements.json" />
+    <None Include="resources\achievements.json" />
     <None Include="default-config.json" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icons\beginners_luck.bmp" />
-    <Content Include="icons\die_hard.bmp" />
-    <Content Include="icons\hotshot.bmp" />
-    <Content Include="icons\it_belongs_in_a_museum.bmp" />
-    <Content Include="icons\it_was_worth_a_shot.bmp" />
-    <Content Include="icons\deep_impact.bmp" />
-    <Content Include="icons\micas_wrath.bmp" />
-    <Content Include="icons\harmonic_convergence.bmp" />
-    <Content Include="icons\cutting_it_close.bmp" />
-    <Content Include="icons\gone_in_60_seconds.bmp" />
-    <Content Include="icons\mmmm_carcinogens.bmp" />
-    <Content Include="icons\pchooooooo.bmp" />
-    <Content Include="icons\hey_whats_this_button_do.bmp" />
-    <Content Include="icons\rigidbody.bmp" />
-    <Content Include="icons\from_the_hearth_to_the_moon.bmp" />
-    <Content Include="icons\archaeologist.bmp" />
-    <Content Include="icons\youve_met_a_terrible_fate.bmp" />
+    <Content Include="resources\enhanced_sound_effects\1.wav" />
+    <Content Include="resources\enhanced_sound_effects\10.wav" />
+    <Content Include="resources\enhanced_sound_effects\11.wav" />
+    <Content Include="resources\enhanced_sound_effects\12.wav" />
+    <Content Include="resources\enhanced_sound_effects\13.wav" />
+    <Content Include="resources\enhanced_sound_effects\14.wav" />
+    <Content Include="resources\enhanced_sound_effects\15.wav" />
+    <Content Include="resources\enhanced_sound_effects\16.wav" />
+    <Content Include="resources\enhanced_sound_effects\17.wav" />
+    <Content Include="resources\enhanced_sound_effects\2.wav" />
+    <Content Include="resources\enhanced_sound_effects\3.wav" />
+    <Content Include="resources\enhanced_sound_effects\4.wav" />
+    <Content Include="resources\enhanced_sound_effects\5.wav" />
+    <Content Include="resources\enhanced_sound_effects\6.wav" />
+    <Content Include="resources\enhanced_sound_effects\7.wav" />
+    <Content Include="resources\enhanced_sound_effects\8.wav" />
+    <Content Include="resources\enhanced_sound_effects\9.wav" />
+    <Content Include="resources\icons\beginners_luck.bmp" />
+    <Content Include="resources\icons\die_hard.bmp" />
+    <Content Include="resources\icons\hotshot.bmp" />
+    <Content Include="resources\icons\it_belongs_in_a_museum.bmp" />
+    <Content Include="resources\icons\it_was_worth_a_shot.bmp" />
+    <Content Include="resources\icons\deep_impact.bmp" />
+    <Content Include="resources\icons\micas_wrath.bmp" />
+    <Content Include="resources\icons\harmonic_convergence.bmp" />
+    <Content Include="resources\icons\cutting_it_close.bmp" />
+    <Content Include="resources\icons\gone_in_60_seconds.bmp" />
+    <Content Include="resources\icons\mmmm_carcinogens.bmp" />
+    <Content Include="resources\icons\pchooooooo.bmp" />
+    <Content Include="resources\icons\hey_whats_this_button_do.bmp" />
+    <Content Include="resources\icons\rigidbody.bmp" />
+    <Content Include="resources\icons\from_the_hearth_to_the_moon.bmp" />
+    <Content Include="resources\icons\archaeologist.bmp" />
+    <Content Include="resources\icons\youve_met_a_terrible_fate.bmp" />
+    <Content Include="resources\standard_sound_effect.wav" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
@@ -312,6 +339,13 @@
       copy /y "$(TargetPath)" "$(OwmlDir)\Mods\$(ModUniqueName)"
       copy /y "$(ProjectDir)\default-config.json" "$(OwmlDir)\Mods\$(ModUniqueName)"
       copy /y "$(ProjectDir)\manifest.json" "$(OwmlDir)\Mods\$(ModUniqueName)"
-    </PostBuildEvent>
+      xcopy /y /e "$(ProjectDir)\resources" "$(OwmlDir)\Mods\$(ModUniqueName)\resources\"</PostBuildEvent>
   </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NUnit.3.13.1\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.13.1\build\NUnit.props'))" />
+    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.17.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.17.0\build\net35\NUnit3TestAdapter.props'))" />
+  </Target>
 </Project>

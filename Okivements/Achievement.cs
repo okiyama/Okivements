@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using OWML.ModHelper;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using UnityEngine;
 
 namespace Okivements
 {
@@ -16,9 +13,10 @@ namespace Okivements
         public bool Earned { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
-        public ModHelper ModHelper { get; set; }
         //Custom achievements or not, false == Steam achievement
         public bool Custom { get; set; }
+        public String IconPath { get; set; }
+        public Texture2D Icon { get; internal set; }
     }
 
 }
